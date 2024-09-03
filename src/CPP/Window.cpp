@@ -3,6 +3,11 @@
 #include "Window.hpp"
 
 
+void inputPoll()
+{
+    
+}
+
 Window::Window(){
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "Erreur lors de l'initialisation de SDL: " << SDL_GetError() << std::endl;

@@ -1,5 +1,6 @@
 #include "GameBoard.hpp"
 #include <random>
+#include <cstring>
 
 // Init & Destroy functions
 GameBoard::GameBoard()
@@ -20,13 +21,15 @@ void GameBoard::initializeBoard()
 
 void GameBoard::resetBoard()
 {
-    for (int i = 0; i < boardSize; i++)
-    {
-        for (int j = 0; j < boardSize; j++)
-        {
-            board[i][j] = 0;
-        }
-    }
+    // for (int i = 0; i < boardSize; i++)
+    // {
+    //     for (int j = 0; j < boardSize; j++)
+    //     {
+    //         board[i][j] = 0;
+    //     }
+    // }
+
+    std::memset(board, 0, 16 * sizeof(int));
 }
 
 //--------------Game Logic--------------//
@@ -48,7 +51,7 @@ void GameBoard::generateRandomTile()
     {
         i = dist(gen);
         j = dist(gen);
-    } while (!verifyFreeTile(i, j));
+    } while (board[i][j] != 0);
 
     board[i][j] = tilePercent(gen) < 9 ? 2 : 4;
 }
