@@ -1,6 +1,9 @@
-#include "Board.hpp"
+#include <iostream>
 #include <random>
 #include <cstring>
+
+#include "Board.hpp"
+#include "../Input/Input.hpp"
 
 // Init & Destroy functions
 Board::Board()
@@ -51,30 +54,59 @@ void Board::generateRandomTile()
 // Moves
 int Board::checkMove()
 {
+    char direction = 0;
+    if (Input::getPressed("Left"))
+    {
+        direction = 'L';
+    }
+    else if (Input::getPressed("Right"))
+    {
+        direction = 'R';
+    }
+    else if (Input::getPressed("Up"))
+    {
+        direction = 'U';
+    }
+    else if (Input::getPressed("Down"))
+    {
+        direction = 'D';
+    }
+    if (direction == 0)
+    {
+        return 0;
+    }
     int sum = 0;
-    char direction;
     int fordward[4] = {0, 1, 2, 3};
     int backward[4] = {3, 2, 1, 0};
     bool isPositive = (direction == 'L' || direction == 'U');
     bool isHorizontal = (direction == 'L' || direction == 'R');
     int step = isPositive ? 1 : -1;
+    bool moved = false;
 
-    for (int i = 0; i < 4; i++)
+    for (auto &i : fordward)
     {
         int target = isPositive ? 0 : 3;
         for (auto &j : isPositive ? fordward : backward)
         {
-            int x = isHorizontal? i : j;
-            int y = isHorizontal? j : i;
+            int x = isHorizontal ? i : j;
+            int y = isHorizontal ? j : i;
 
             if (board[x][y] != 0)
             {
-                if (y != target)
+                if (j != target)
                 {
-                    board[x][target] = board[x][y];
+                    if (isHorizontal)
+                    {
+                        board[x][target] = board[x][y];
+                    }
+                    else
+                    {
+                        board[target][y] = board[x][y];
+                    }
                     board[x][y] = 0;
+                    moved = true;
                 }
-                target++;
+                target += step;
             }
         }
 
@@ -82,16 +114,30 @@ int Board::checkMove()
         {
             int x = isHorizontal ? i : j;
             int y = isHorizontal ? j : i;
-            
-            if (board[x][y] != 0 && board[x][y] == board[x][y + step])
+
+            if (isHorizontal)
             {
-                sum += board[x][y] *2;
-                board[x][y] *= 2;
-                board[x][y + step] = 0;
+                if ((y + step >= 0 && y + step < 4) && board[x][y] != 0 && board[x][y] == board[x][y + step])
+                {
+                    sum += board[x][y] * 2;
+                    board[x][y] *= 2;
+                    board[x][y + step] = 0;
+                    moved = true;
+                }
+            }
+            else
+            {
+                if ((x + step >= 0 && x + step < 4) && board[x][y] != 0 && board[x][y] == board[x + step][y])
+                {
+                    sum += board[x][y] * 2;
+                    board[x][y] *= 2;
+                    board[x + step][y] = 0;
+                    moved = true;
+                }
             }
         }
 
-        int target = isPositive ? 0 : 3;
+        target = isPositive ? 0 : 3;
         for (auto &j : isPositive ? fordward : backward)
         {
             int x = isHorizontal ? i : j;
@@ -99,14 +145,92 @@ int Board::checkMove()
 
             if (board[x][y] != 0)
             {
-                if (y != target)
+                if (j != target)
                 {
-                    board[x][target] = board[x][y];
+                    if (isHorizontal)
+                    {
+                        board[x][target] = board[x][y];
+                    }
+                    else
+                    {
+                        board[target][y] = board[x][y];
+                    }
                     board[x][y] = 0;
+                    moved = true;
                 }
-                target++;
+                target += step;
             }
         }
     }
+    if (moved){generateRandomTile();}
     return sum;
 }
+
+void Board::printBoard(int (&grid)[4][4])
+{
+    system("cls");
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            std::cout << grid[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+}
+
+bool Board::gridIsFull()
+{
+    for (int i = 0; i < 4; ++i)
+    {
+        for (int j = 0; j < 4; ++j)
+        {
+            if (board[i][j] == 0)
+            {
+                return false; // Grid is not full, there are empty tiles
+            }
+        }
+    }
+
+    for (int i = 0; i < 4; ++i)
+    {
+        for (int j = 0; j < 4; ++j)
+        {
+            if (j < 3 && board[i][j] == board[i][j + 1])
+            {
+                return false;
+            }
+
+            if (i < 3 && board[i][j] == board[i + 1][j])
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+// int main()
+// {
+//     Input::initialize();
+//     Board board = Board();
+//     while (true)
+//     {
+//         Sleep(100);
+//         board.checkMove();
+//         board.printBoard(board.board);
+//         // system("cls");
+//         if (Input::getPressed("Escape"))
+//         {
+//             std::cout << "Closing Programm" << std::endl;
+//             return 0;
+//         }
+
+//         if (Input::getPressed("r"))
+//         {
+//             board.initializeBoard();
+//         }
+//     }
+//     return 0;
+// }

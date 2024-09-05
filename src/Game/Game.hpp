@@ -4,14 +4,13 @@
 class Game
 {
 private:
-    int currentScore = 0;
+    int currentScore;
     int bestScore;
 public:
-    Game(/* args */);
+    Game();
     ~Game();
 
     void update();
-    void initialize();
     void run();
 };
 

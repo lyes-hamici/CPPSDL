@@ -24,6 +24,8 @@ public:
 
     // The  board - is an array of 4 x 4 elements - stored in the stack
     int board[4][4];
+
+    void printBoard(int (&grid)[4][4]);
 };
 
 
