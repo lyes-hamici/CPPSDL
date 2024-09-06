@@ -1,0 +1,1 @@
+-I"C:/CPPSDL/build/_deps/sfml-src/include" -I"C:/CPPSDL/build/_deps/sfml-src/src" -isystem "C:/CPPSDL/build/_deps/sfml-src/extlibs/headers/minimp3" -isystem "C:/CPPSDL/build/_deps/sfml-src/extlibs/headers/AL" -isystem "C:/CPPSDL/build/_deps/sfml-src/extlibs/headers"

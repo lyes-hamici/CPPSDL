@@ -48,6 +48,13 @@
         "streambuf": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "map": "cpp"
-    }
+        "map": "cpp",
+        "*.rh": "cpp",
+        "bitset": "cpp",
+        "ctime": "cpp",
+        "set": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

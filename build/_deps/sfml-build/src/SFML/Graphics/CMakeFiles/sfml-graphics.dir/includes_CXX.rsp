@@ -1,0 +1,1 @@
+-I"C:/CPPSDL/build/_deps/sfml-src/include" -I"C:/CPPSDL/build/_deps/sfml-src/src" -isystem "C:/CPPSDL/build/_deps/sfml-src/extlibs/headers/stb_image" -isystem "C:/CPPSDL/build/_deps/sfml-src/extlibs/headers/glad/include" -isystem "C:/CPPSDL/build/_deps/sfml-src/extlibs/headers/freetype2"

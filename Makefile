@@ -3,4 +3,3 @@ all:
 
 run:
 	./main
-
