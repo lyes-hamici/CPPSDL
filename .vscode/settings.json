@@ -54,6 +54,9 @@
         "charconv": "cpp",
         "format": "cpp",
         "span": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "fstream": "cpp",
+        "codecvt": "cpp",
+        "ratio": "cpp"
     }
 }
