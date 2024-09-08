@@ -6,6 +6,7 @@
 
 
 std::map<std::string, int> Input::keys;
+bool Input::wasPressed = false;
 
 void Input::initialize()
 {
@@ -26,21 +27,22 @@ bool Input::getPressed(char character){
 }
 bool Input::getPressed(std::string name)
 {
+    // std::cout << std::boolalpha << "On entering getPressed - wasPressed : " << Input::wasPressed << std::endl;
     if (name.length() < 1)
     {
         return false;
     }
-    int state = WM_KEYUP;
+    int state = 0;
     if (name.length() > 1 && Input::keys.contains(name))
     {
         state = GetKeyState(Input::keys[name]);
-        if (state & WM_KEYDOWN)
+        if (!(Input::wasPressed) && state & WM_KEYDOWN)
         {
-            return true;
+            return Input::wasPressed = true;
         }
-        if (state & WM_KEYUP)
+        else if (Input::wasPressed && state & WM_KEYUP)
         {
-            return false;
+            return Input::wasPressed = false;
         }
         return false;
     }

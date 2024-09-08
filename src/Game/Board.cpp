@@ -4,6 +4,7 @@
 
 #include "Board.hpp"
 #include "../Input/Input.hpp"
+#include "../Renderer/Renderer.hpp"
 
 // Init & Destroy functions
 Board::Board()
@@ -166,18 +167,12 @@ int Board::checkMove()
     return sum;
 }
 
-void Board::printBoard(int (&grid)[4][4])
+void Board::printBoard()
 {
-    system("cls");
-    for (int i = 0; i < 4; i++)
+    for (auto &i : board)
     {
-        for (int j = 0; j < 4; j++)
-        {
-            std::cout << grid[i][j] << " ";
-        }
-        std::cout << std::endl;
+        Renderer::drawRow(i, 4);
     }
-
 }
 
 bool Board::gridIsFull()

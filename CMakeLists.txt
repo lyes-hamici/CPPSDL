@@ -1,35 +1,58 @@
+#=================================
+# Base Options
+#=================================
 cmake_minimum_required(VERSION 3.16)
 project(2048 LANGUAGES CXX)
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Build)
+set(useSDL 0)
+set(useSFML 0)
+set(languageStandard 23)
+#=================================
+# Setup
+#=================================
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
-
-include(FetchContent)
-FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 2.6.x
-)
-FetchContent_MakeAvailable(SFML)
-
 cmake_policy(SET CMP0115 NEW)
-
-add_executable(2048
-    src/Core/*.cpp
-    src/File/*.cpp
-    src/Game/*.cpp
-    src/Input/*.cpp
-    src/Renderer/*.cpp
+#=================================
+# Executable
+#=================================
+add_executable(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/src/Core/main.cpp)
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}")
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_${languageStandard})
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/Core
+	${CMAKE_SOURCE_DIR}/src/Game
+	${CMAKE_SOURCE_DIR}/src/Input
+	${CMAKE_SOURCE_DIR}/src/Renderer
 )
-
-target_link_libraries(2048
-    #SFML
-    PRIVATE sfml-graphics
-    #SDL2
-	PRIVATE SDL2main
-    PRIVATE SDL2
-    PRIVATE SDL2_image
-)
-
-target_compile_features(2048 PRIVATE cxx_std_23)
-
-install(TARGETS 2048)
+file(GLOB SOURCES CONFIGURE_DEPENDS *.h *.cpp *.hpp)
+target_sources(${PROJECT_NAME} PRIVATE ${SOURCES})
+#=================================
+# SDL
+#=================================
+if(useSDL)
+	target_link_libraries(${PROJECT_NAME}
+		PRIVATE PRIVATE SDL2main
+		PRIVATE PRIVATE SDL2
+		PRIVATE PRIVATE SDL2_image
+		#PRIVATE PRIVATE SDL2_ttf
+	)
+endif()
+#=================================
+# SFML
+#=================================
+if(useSFML)
+	include(FetchContent)
+	FetchContent_Declare(SFML
+		GIT_REPOSITORY https://github.com/SFML/SFML.git
+		GIT_TAG 2.6.x
+	)
+	FetchContent_MakeAvailable(SFML)
+	target_link_libraries(${PROJECT_NAME}
+		PRIVATE sfml-graphics
+		PRIVATE sfml-window
+	)
+endif()
+#=================================
+# Pre-process
+#=================================
+install(TARGETS ${PROJECT_NAME})

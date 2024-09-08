@@ -7,7 +7,7 @@
 class Input
 {
 private:
-    /* data */
+    static bool wasPressed;
 public:
     static void initialize();
     static bool getPressed(std::string name);
