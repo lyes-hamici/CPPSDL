@@ -1,0 +1,65 @@
+App
+    main.cpp
+Game
+    Game.cpp
+    Game.hpp
+    Board.cpp
+    Board.hpp
+    Save.cpp
+    Save.hpp
+Input
+    WindowsConsole
+        WindowsConsole.cpp
+        WindowsConsole.hpp //?
+    SDL
+        SDL.cpp            //Link with LibSDL
+        SDL.hpp            //?
+    SFML
+        SFML.cpp
+        SFML.hpp           //?
+    Input.cpp
+    Input.hpp
+Renderer
+    WindowsConsole
+        WindowsConsole.cpp
+        WindowsConsole.hpp //?
+    SDL
+        SDL.cpp            //Link with LibSDL
+        SDL.hpp            //?
+    SFML
+        SFML.cpp
+        SFML.hpp           //?
+LibSDL
+    include
+
+//===================================================
+
+App = src/App
+Game = src/Game
+InputConsole = src/Input/WindowsConsole
+InputSDL = src/Input/SDL
+InputSFML = src/Input/SFML
+RendererWindows = src/Renderer/WindowsConsole
+RendererSDL = src/Renderer/SDL
+RendererSFML = src/Renderer/SFML
+LibSDL = src/LibSDL/include
+LibSFML = stc/LibSFML/include
+Libs = lib
+
+App = main.cpp
+Game = Game.cpp Board.cpp Save.cpp
+InputConsole = Input.cpp WindowsConsole.cpp
+InputSDL = Input.cpp SDL.cpp
+InputSFML = Input.cpp SFML.cpp
+RendererWindows = Renderer.cpp WindowsConsole.cpp
+RendererWindows = Renderer.cpp WindowsConsole.cpp
+RendererSDL = Renderer.cpp SDL.cpp
+RendererSFML = Renderer.cpp SFML.cpp
+    SDL
+        SDL.cpp            //Link with LibSDL
+        SDL.hpp            //?
+    SFML
+        SFML.cpp
+        SFML.hpp           //?
+LibSDL
+    include
