@@ -6,6 +6,7 @@
 #include <thread> // pour std::this_thread::sleep_for
 #include <chrono> // pour std::chrono::milliseconds
 
+
 class InputSfml
 {
 public:
