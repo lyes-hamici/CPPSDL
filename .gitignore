@@ -1,1 +1,3 @@
-/build
+/BuildCache
+.vscode
+/Build/Score.save

@@ -3,9 +3,10 @@
 #=================================
 cmake_minimum_required(VERSION 3.16)
 project(2048 LANGUAGES CXX)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Build)
-set(useSDL 0)
-set(useSFML 0)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Build)
+set(USE_SDL 0)
+set(USE_SFML 0)
+set(USE_WINDOWSCONSOLE 1)
 set(languageStandard 23)
 #=================================
 # Setup
@@ -15,21 +16,35 @@ cmake_policy(SET CMP0115 NEW)
 #=================================
 # Executable
 #=================================
-add_executable(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/src/Core/main.cpp)
+add_executable(${PROJECT_NAME}
+	${CMAKE_SOURCE_DIR}/src/Core/main.cpp
+	${CMAKE_SOURCE_DIR}/src/Game/Board.cpp
+	${CMAKE_SOURCE_DIR}/src/Game/Game.cpp
+	${CMAKE_SOURCE_DIR}/src/Game/File.cpp
+	${CMAKE_SOURCE_DIR}/src/Input/Input.cpp
+	${CMAKE_SOURCE_DIR}/src/Renderer/Renderer.cpp
+)
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}")
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_${languageStandard})
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/Core
-	${CMAKE_SOURCE_DIR}/src/Game
-	${CMAKE_SOURCE_DIR}/src/Input
-	${CMAKE_SOURCE_DIR}/src/Renderer
-)
-file(GLOB SOURCES CONFIGURE_DEPENDS *.h *.cpp *.hpp)
-target_sources(${PROJECT_NAME} PRIVATE ${SOURCES})
 #=================================
 # SDL
 #=================================
-if(useSDL)
+if(USE_SDL)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=${USE_SDL})
+	FetchContent_Declare(
+		SDL2
+		GIT_REPOSITORY https://github.com/libsdl-org/SDL
+		GIT_TAG 97405e74e952f51b16c315ed5715b6b9de5a8a50
+		GIT_PROGRESS TRUE
+	)
+	# sdl2_image
+	FetchContent_Declare(
+		SDL2_IMAGE
+		GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
+		GIT_TAG 97405e74e952f51b16c315ed5715b6b9de5a8a50
+		GIT_PROGRESS TRUE
+	)
+	FetchContent_MakeAvailable(SDL2 SDL2_IMAGE)
 	target_link_libraries(${PROJECT_NAME}
 		PRIVATE PRIVATE SDL2main
 		PRIVATE PRIVATE SDL2
@@ -40,7 +55,8 @@ endif()
 #=================================
 # SFML
 #=================================
-if(useSFML)
+if(USE_SFML)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SFML=${USE_SFML})
 	include(FetchContent)
 	FetchContent_Declare(SFML
 		GIT_REPOSITORY https://github.com/SFML/SFML.git
@@ -51,6 +67,12 @@ if(useSFML)
 		PRIVATE sfml-graphics
 		PRIVATE sfml-window
 	)
+endif()
+#=================================
+# WindowsConsole
+#=================================
+if(USE_WINDOWSCONSOLE)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_WINDOWSCONSOLE=${USE_WINDOWSCONSOLE})
 endif()
 #=================================
 # Pre-process

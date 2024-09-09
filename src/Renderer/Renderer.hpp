@@ -3,6 +3,7 @@
 
 #include <tuple>
 #include <vector>
+#include <string>
 
 class Renderer
 {

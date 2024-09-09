@@ -15,7 +15,7 @@ Game::Game()
 {
     Renderer::loadFont();
     Renderer::loadTextures();
-    bestScore = File::loadScore("build/Score.save");
+    bestScore = File::loadScore("Score.save");
     this->run();
     // this->bestScore = save.load();
 }
@@ -33,7 +33,7 @@ void Game::run()
     Board board = Board();
     while(true)
     {   
-        Sleep(100);
+        Sleep(16);
         Renderer::clear();
         if(!board.gridIsFull())
         {
@@ -67,7 +67,7 @@ void Game::checkScore()
 {
     if (currentScore > bestScore)
     {
-        File::saveScore(currentScore, "build/Score.save");
+        File::saveScore(currentScore, "Score.save");
         bestScore = currentScore;
     }
 }
