@@ -61,15 +61,15 @@ int Board::checkMove()
     {
         direction = 'L';
     }
-    if (InputSDL::getPressed("Right"))
+    else if (InputSDL::getPressed("Right"))
     {
         direction = 'R';
     }
-    if (InputSDL::getPressed("Up"))
+    else if (InputSDL::getPressed("Up"))
     {
         direction = 'U';
     }
-    if (InputSDL::getPressed("Down"))
+    else if (InputSDL::getPressed("Down"))
     {
         direction = 'D';
     }

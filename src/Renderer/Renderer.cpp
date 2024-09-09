@@ -37,7 +37,7 @@ void Renderer::drawRow(void *row, int size)
 
 void Renderer::drawText(std::string text, std::string fontName, int fontSize, std::tuple<int, int> pos)
 {
-    std::cout << text << std::endl;
+    // std::cout << text << std::endl;
 
 }
 

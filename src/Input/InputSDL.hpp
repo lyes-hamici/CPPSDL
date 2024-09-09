@@ -15,6 +15,8 @@ public:
     static bool getPressed(std::string name);
     static bool getPressed(char character);
     static std::map<std::string, SDL_KeyCode> keys;
+    static bool wasPressed;
+    static SDL_KeyCode keyPressed;
 };
 
 

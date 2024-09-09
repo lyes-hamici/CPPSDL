@@ -1,11 +1,12 @@
 #include "InputSDL.hpp"
 
-
 #include <windows.h>
 #include <cctype>
 #include <iostream>
 
 std::map<std::string, SDL_KeyCode> InputSDL::keys;
+bool InputSDL::wasPressed = false;
+SDL_KeyCode InputSDL::keyPressed;
 
 void InputSDL::initialize()
 {
@@ -57,47 +58,49 @@ bool InputSDL::getPressed(std::string name)
     // }
     if (InputSDL::keys.contains(name))
     {
-        SDL_PumpEvents();
         const Uint8 *state = SDL_GetKeyboardState(NULL);
         SDL_Scancode scancode = SDL_GetScancodeFromKey(InputSDL::keys[name]);
-        if (state[scancode])
+        SDL_PumpEvents();
+        if (state[scancode] && !InputSDL::wasPressed)
         {
-            // std::cout << "Key : " << name << std::endl;
+            InputSDL::wasPressed = true;
+            InputSDL::keyPressed = InputSDL::keys[name];
+            SDL_PumpEvents();
+            std::cout << "Key : " << name << " pressed" << std::endl;
             return true;
         }
-        else
+        else if (!state[scancode] && InputSDL::wasPressed && InputSDL::keyPressed == InputSDL::keys[name])
         {
+            InputSDL::wasPressed = false;
+            SDL_PumpEvents();
+            std::cout << "Key : " << name << " released" << std::endl;
+            return false;
+        }
+        else {
+            SDL_PumpEvents();
             return false;
         }
         // return state[scancode];
 
-        // if (state[scancode] & SDL_KEYDOWN)
-        // {
-        //     std::cout << "Key : " << name << "Pressed" << std::endl;
-        //     return true;
-        // }
-        // if (state[scancode] & SDL_KEYUP)
-        // {
-        //     return false;
-        // }
-
-        // return SDL_GetKeyboardState(nullptr)[SDL_GetScancodeFromKey(InputSDL::keys[name])];
-        
         // SDL_Event event;
-        // while (SDL_PollEvent(&event))
+        // if (SDL_PollEvent(&event))
         // {
         //     if (event.type == SDL_KEYDOWN)
         //     {
         //         if (event.key.keysym.sym == keys[name])
         //         {
-        //             std::cout << "Key : " << name << "Pressed" << std::endl;
+        //             std::cout << "Key : " << name << " pressed" << std::endl;
         //             return true;
         //         }
         //         return false;
         //     }
+        //     // else if (event.type == SDL_KEYUP)
+        //     // {
+        //     //     this->keyup(&event);
+        //     // }
         //     return false;
         // }
     }
 
-        return false;
+    return false;
 }
