@@ -3,7 +3,8 @@
 #include <cstring>
 
 #include "Board.hpp"
-#include "../Input/Input.hpp"
+// #include "../Input/Input.hpp"
+#include "../Input/InputSDL.hpp"
 #include "../Renderer/Renderer.hpp"
 
 // Init & Destroy functions
@@ -56,19 +57,19 @@ void Board::generateRandomTile()
 int Board::checkMove()
 {
     char direction = 0;
-    if (Input::getPressed("Left"))
+    if (InputSDL::getPressed("Left"))
     {
         direction = 'L';
     }
-    else if (Input::getPressed("Right"))
+    if (InputSDL::getPressed("Right"))
     {
         direction = 'R';
     }
-    else if (Input::getPressed("Up"))
+    if (InputSDL::getPressed("Up"))
     {
         direction = 'U';
     }
-    else if (Input::getPressed("Down"))
+    if (InputSDL::getPressed("Down"))
     {
         direction = 'D';
     }

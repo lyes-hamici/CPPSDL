@@ -7,7 +7,8 @@
 #include "Game.hpp"
 #include "Board.hpp"
 #include "File.hpp"
-#include "../Input/Input.hpp"
+// #include "../Input/Input.hpp"
+#include "../Input/InputSDL.hpp"
 #include "../Renderer/Renderer.hpp"
 
 Game::Game()
@@ -32,7 +33,7 @@ void Game::run()
 {
     Board board = Board();
     while(true)
-    {   
+    {
         Sleep(100);
         Renderer::clear();
         if(!board.gridIsFull())
@@ -43,13 +44,14 @@ void Game::run()
         Renderer::drawText(std::to_string(currentScore) + "                 " + std::to_string(bestScore) + "\n", "default", 20, std::tuple<int, int>(300, 400));
         board.printBoard();
         Renderer::drawText("Press r to reset the game", "default", 20, std::tuple<int, int>(300, 400));
-        if (Input::getPressed("Escape"))
+        
+        if (InputSDL::getPressed("Escape"))
         {
             std::cout << "Closing Programm" << std::endl;
             break;
         }
 
-        if (Input::getPressed("r"))
+        if (InputSDL::getPressed("r"))
         {
             board.initializeBoard();
             checkScore();
