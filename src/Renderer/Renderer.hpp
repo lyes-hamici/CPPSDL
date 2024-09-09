@@ -3,15 +3,15 @@
 
 #include <tuple>
 #include <string>
+#include <iostream>
 
 #ifdef USE_WINDOWSCONSOLE
-#include <iostream>
 #include <iomanip>
 #endif
 
 #ifdef USE_SDL
 #include <map>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #endif
 
 #ifdef USE_SFML

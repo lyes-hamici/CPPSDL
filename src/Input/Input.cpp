@@ -99,11 +99,11 @@ void Input::initialize()
 			SDL_PumpEvents();
 			if (state[scancode] && !Input::wasPressed)
 			{
-				Inputt::keyPressed = Input::keys[name];
+				Input::keyPressed = name;
 				SDL_PumpEvents();
 				return Input::wasPressed = true;
 			}
-			else if (!state[scancode] && Input::wasPressed && Input::keyPressed == InputSDL::keys[name])
+			else if (!state[scancode] && Input::wasPressed && Input::keyPressed == name)
 			{	
 				SDL_PumpEvents();
 				return Input::wasPressed = false;
@@ -114,6 +114,7 @@ void Input::initialize()
 				return false;
 			}
 		}
+		return false;
 	}
 #endif
 
