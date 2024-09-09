@@ -3,6 +3,7 @@
 
 // #define USE_WINDOWSCONSOLE // For coding purposes - ERASE THIS
 // #define USE_SDL // For coding purposes - ERASE THIS
+// #define USE_SFML // For coding purposes - ERASE THIS
 
 #include <map>
 #include <string>

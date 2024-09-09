@@ -4,7 +4,6 @@ bool Input::wasPressed = false;
 std::string Input::keyPressed;
 
 #ifdef USE_WINDOWSCONSOLE
-
 std::map<std::string, int> Input::keys;
 
 void Input::initialize()
@@ -50,7 +49,6 @@ void Input::initialize()
 	}
 #endif
 #ifdef USE_SDL
-
 	std::map<std::string, SDL_KeyCode> Input::keys;
 
 	void Input::initialize()
@@ -101,16 +99,14 @@ void Input::initialize()
 			SDL_PumpEvents();
 			if (state[scancode] && !Input::wasPressed)
 			{
-				Input::wasPressed = true;
-				Input::keyPressed = Input::keys[name];
+				Inputt::keyPressed = Input::keys[name];
 				SDL_PumpEvents();
-				return true;
+				return Input::wasPressed = true;
 			}
 			else if (!state[scancode] && Input::wasPressed && Input::keyPressed == InputSDL::keys[name])
-			{
-				Input::wasPressed = false;
+			{	
 				SDL_PumpEvents();
-				return false;
+				return Input::wasPressed = false;
 			}
 			else
 			{
@@ -143,7 +139,7 @@ void Input::initialize()
 		return sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(character - 'A' + sf::Keyboard::A));
 	}
 
-	bool Input::getPressed(const std::string& name)
+	bool Input::getPressed(std::string name)
 	{
 		if (name.empty()){
 			return false;
@@ -152,7 +148,23 @@ void Input::initialize()
 			return getPressed(name[0]);
 		}
 		// Vérifier si c'est une touche nommée (par ex. "Left", "Escape", etc.)
-		return keys.contains(name) ? sf::Keyboard::isKeyPressed(keys[name]) : false;
+		if (keys.contains(name))
+		{
+			if (sf::Keyboard::isKeyPressed(keys[name]) && !Input::wasPressed)
+			{
+				Input::keyPressed = name;
+				return Input::wasPressed = true;
+			}
+			else if (!sf::Keyboard::isKeyPressed(keys[name]) && Input::wasPressed && Input::keyPressed == name)
+			{
+				return Input::wasPressed = false;
+			}
+			else 
+			{
+				return false;
+			}
+		}
+		return false;
 		// Sinon, traiter comme une touche de caractère unique
 	}
 #endif
