@@ -4,9 +4,9 @@
 cmake_minimum_required(VERSION 3.16)
 project(2048 LANGUAGES CXX)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Build)
-set(USE_SDL 0)
+set(USE_SDL 1)
 set(USE_SFML 0)
-set(USE_WINDOWSCONSOLE 1)
+set(USE_WINDOWSCONSOLE 0)
 set(languageStandard 23)
 #=================================
 # Setup
@@ -31,24 +31,26 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_${languageStandard})
 #=================================
 if(USE_SDL)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=${USE_SDL})
+	include(FetchContent)
 	FetchContent_Declare(
 		SDL2
 		GIT_REPOSITORY https://github.com/libsdl-org/SDL
-		GIT_TAG 97405e74e952f51b16c315ed5715b6b9de5a8a50
+		GIT_TAG 9519b9916cd29a14587af0507292f2bd31dd5752
 		GIT_PROGRESS TRUE
 	)
 	# sdl2_image
-	FetchContent_Declare(
-		SDL2_IMAGE
-		GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
-		GIT_TAG 97405e74e952f51b16c315ed5715b6b9de5a8a50
-		GIT_PROGRESS TRUE
-	)
-	FetchContent_MakeAvailable(SDL2 SDL2_IMAGE)
+	# FetchContent_Declare(
+	# 	SDL2_IMAGE
+	# 	GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
+	# 	GIT_TAG 9519b9916cd29a14587af0507292f2bd31dd5752
+	# 	GIT_PROGRESS TRUE
+	# )
+	# FetchContent_MakeAvailable(SDL2 SDL2_IMAGE)
+	FetchContent_MakeAvailable(SDL2)
 	target_link_libraries(${PROJECT_NAME}
 		PRIVATE PRIVATE SDL2main
 		PRIVATE PRIVATE SDL2
-		PRIVATE PRIVATE SDL2_image
+		# PRIVATE PRIVATE SDL2_image
 		#PRIVATE PRIVATE SDL2_ttf
 	)
 endif()

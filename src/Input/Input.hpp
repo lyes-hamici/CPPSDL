@@ -15,8 +15,7 @@
 #endif
 
 #ifdef USE_SDL
-#include <SDL_keyboard.h>
-#include <SDL.h> // Just for the moment - ERASE THIS
+#include <SDL> //Revoir ça
 #endif
 
 #ifdef USE_SFML
