@@ -13,8 +13,7 @@
 #include <map>
 #include <SDL2/SDL.h>
 #include <SDL_image.h>
-// #include <SDL2/SDL_image.h>
-// #include <SDL2/SDL_ttf.h>
+// #include <SDL2_ttf>
 #endif
 
 #ifdef USE_SFML
@@ -38,10 +37,12 @@ public:
 
 #ifdef USE_SDL
     // static std::map<std::string, SDL_Images> images;
+    static SDL_Window *window;
+    static SDL_Renderer *renderer;
 #endif
 
 #ifdef USE_SFML
-    static sf::RenderWindow window;
+        static sf::RenderWindow window;
 // std::map<std::string, sf::Texture> Input::images;
 // std::map<std::string, sf::Font> Input::fonts;
 #endif

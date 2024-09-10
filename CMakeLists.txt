@@ -44,15 +44,36 @@ if(USE_SDL)
 		GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
 		GIT_TAG abcf63aa71b4e3ac32120fa9870a6500ddcdcc89
 		GIT_PROGRESS TRUE
-	)
+		)
+		# # # harfbuzz
+		# FetchContent_Declare(
+		# 	HARFBUZZ
+		# 	GIT_REPOSITORY https://github.com/harfbuzz/harfbuzz.git
+		# 	GIT_TAG 9c03576c49db6e7207d9bcdfe3abd170a809157f
+		# 	GIT_PROGRESS TRUE
+		# 	)
+		# # freetype
+		# FetchContent_Declare(
+		# 	FREETYPE
+		# 	GIT_REPOSITORY https://github.com/freetype/freetype
+		# 	GIT_TAG 42608f77f20749dd6ddc9e0536788eaad70ea4b5
+		# 	GIT_PROGRESS TRUE
+		# 	)
+	# sdl2_ttf
+	# FetchContent_Declare(
+	# 	SDL2_TTF
+	# 	GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf
+	# 	GIT_TAG 4a318f8dfaa1bb6f10e0c5e54052e25d3c7f3440
+	# 	GIT_PROGRESS TRUE
+	# 	)
+	# FetchContent_GetProperties(freetype)
 	FetchContent_MakeAvailable(SDL2 SDL2_IMAGE)
-	# FetchContent_MakeAvailable(SDL2)
 	target_link_libraries(${PROJECT_NAME}
-		PRIVATE PRIVATE SDL2main
-		# PRIVATE PRIVATE SDL2
+		 PRIVATE SDL2main
+		#  PRIVATE SDL2::SDL2
 		PRIVATE SDL2-static
-		PRIVATE PRIVATE SDL2_image
-		#PRIVATE PRIVATE SDL2_ttf
+		 PRIVATE SDL2_image
+		#  PRIVATE SDL2_ttf
 	)
 endif()
 #=================================

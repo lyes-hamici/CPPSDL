@@ -45,13 +45,15 @@ std::tuple<int, int> Renderer::getResolution()
 #endif
 
 #ifdef USE_SDL
-// std::map<std::string, SDL_Images> Renderer::textures;
+// std::map<std::string, SDL_Images> Renderer::images;
+SDL_Window* Renderer::window;
+SDL_Renderer* Renderer::renderer;
 void Renderer::initialize()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
     // TTF_Init();
     IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_AVIF);
-    SDL_Window *window = SDL_CreateWindow("Ma Fenêtre SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 400, 400, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Ma Fenêtre SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 400, 400, SDL_WINDOW_SHOWN);
 
     if (window == nullptr)
     {
@@ -59,7 +61,7 @@ void Renderer::initialize()
         SDL_Quit();
     }
 
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == nullptr)
     {
         std::cerr << "Erreur lors de la création du renderer: " << SDL_GetError() << std::endl;
