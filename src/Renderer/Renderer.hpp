@@ -11,7 +11,7 @@
 
 #ifdef USE_SDL
 #include <map>
-#include <SDL2/SDL.h>
+#include "../LibSDL/SDL.h"
 #include <SDL_image.h>
 // #include <SDL2_ttf>
 #endif

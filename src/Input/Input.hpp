@@ -15,7 +15,7 @@
 #endif
 
 #ifdef USE_SDL
-#include <SDL2/SDL.h> //Revoir ça
+#include "../LibSDL/SDL.h" //Revoir ça
 #endif
 
 #ifdef USE_SFML
