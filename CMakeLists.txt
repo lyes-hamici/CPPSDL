@@ -39,18 +39,19 @@ if(USE_SDL)
 		GIT_PROGRESS TRUE
 	)
 	# sdl2_image
-	# FetchContent_Declare(
-	# 	SDL2_IMAGE
-	# 	GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
-	# 	GIT_TAG 9519b9916cd29a14587af0507292f2bd31dd5752
-	# 	GIT_PROGRESS TRUE
-	# )
-	# FetchContent_MakeAvailable(SDL2 SDL2_IMAGE)
-	FetchContent_MakeAvailable(SDL2)
+	FetchContent_Declare(
+		SDL2_IMAGE
+		GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
+		GIT_TAG abcf63aa71b4e3ac32120fa9870a6500ddcdcc89
+		GIT_PROGRESS TRUE
+	)
+	FetchContent_MakeAvailable(SDL2 SDL2_IMAGE)
+	# FetchContent_MakeAvailable(SDL2)
 	target_link_libraries(${PROJECT_NAME}
 		PRIVATE PRIVATE SDL2main
-		PRIVATE PRIVATE SDL2
-		# PRIVATE PRIVATE SDL2_image
+		# PRIVATE PRIVATE SDL2
+		PRIVATE SDL2-static
+		PRIVATE PRIVATE SDL2_image
 		#PRIVATE PRIVATE SDL2_ttf
 	)
 endif()

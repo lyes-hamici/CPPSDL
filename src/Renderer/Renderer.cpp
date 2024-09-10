@@ -49,6 +49,8 @@ std::tuple<int, int> Renderer::getResolution()
 void Renderer::initialize()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
+    // TTF_Init();
+    // IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_AVIF);
     SDL_Window *window = SDL_CreateWindow("Ma Fenêtre SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 400, 400, SDL_WINDOW_SHOWN);
 
     if (window == nullptr)
