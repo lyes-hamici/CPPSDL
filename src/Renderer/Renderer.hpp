@@ -1,6 +1,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+// #define USE_SDL
+
 #include <tuple>
 #include <string>
 #include <iostream>
@@ -31,12 +33,13 @@ public:
     static void loadTextures();
     static void loadFont();
     static void draw();
+    static void draw(int (&grid)[4][4]);
     static void drawRow(void *row, int size);
     static void drawText(std::string text, std::string fontName, int fontSize, std::tuple<int, int> pos);
     static std::tuple<int, int> getResolution();
 
 #ifdef USE_SDL
-    // static std::map<std::string, SDL_Images> images;
+    static std::map<std::string, SDL_Texture*> images;
     static SDL_Window *window;
     static SDL_Renderer *renderer;
 #endif

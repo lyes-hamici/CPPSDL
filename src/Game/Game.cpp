@@ -41,7 +41,8 @@ void Game::run()
             }
             Renderer::drawText("Score           Meilleur", "default", 20, std::tuple<int, int>(300, 400));
             Renderer::drawText(std::to_string(currentScore) + "                 " + std::to_string(bestScore) + "\n", "default", 20, std::tuple<int, int>(300, 400));
-            board.printBoard();
+            // board.printBoard();
+            Renderer::draw(board.board);
             Renderer::drawText("Press r to reset the game", "default", 20, std::tuple<int, int>(300, 400));
             if (Input::getPressed("Escape"))
             {
