@@ -16,6 +16,7 @@ void Renderer::loadFont(){}
 void Renderer::draw()
 {
 }
+void Renderer::draw(int (&board)[4][4]){}
 
 void Renderer::drawRow(void *row, int size)
 {
@@ -121,7 +122,7 @@ void Renderer::draw()
 
     SDL_RenderPresent(Renderer::renderer); // Display rendered content
 }
-void Renderer::draw(int (&grid)[4][4])
+void Renderer::draw(int (&board)[4][4])
 {
     SDL_SetRenderDrawColor(Renderer::renderer, 255, 0, 0, 255); // Set background color
     SDL_RenderClear(Renderer::renderer);                        // Clear the screen
@@ -139,7 +140,7 @@ void Renderer::draw(int (&grid)[4][4])
     {
         for (int col = 0; col < 4; ++col)
         {
-            int value = grid[row][col]; // Get the value from the grid
+            int value = board[row][col]; // Get the value from the grid
 
             SDL_Rect dstRect = {
                 startX + col * (tileSize + spacing), // x position
