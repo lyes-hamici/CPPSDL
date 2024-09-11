@@ -1,6 +1,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+// #define USE_SDL
+
 #include <tuple>
 #include <string>
 #include <iostream>
@@ -13,10 +15,9 @@
 
 #ifdef USE_SDL
 #include <map>
-#include <SDL2/SDL.h>
+#include "../LibSDL/SDL.h"
 #include <SDL_image.h>
-// #include <SDL2/SDL_image.h>
-// #include <SDL2/SDL_ttf.h>
+// #include <SDL2_ttf>
 #endif
 
 #ifdef USE_SFML
@@ -43,7 +44,9 @@ public:
     static std::tuple<int, int> getResolution();
 
 #ifdef USE_SDL
-    // static std::map<std::string, SDL_Images> images;
+    static std::map<std::string, SDL_Texture*> images;
+    static SDL_Window *window;
+    static SDL_Renderer *renderer;
 #endif
 
 #ifdef USE_SFML
