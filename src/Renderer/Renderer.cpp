@@ -9,13 +9,13 @@ void Renderer::clear(){
     system("cls");
 }
 
+void Renderer::display(){}
+
 void Renderer::loadTextures(){}
 
 void Renderer::loadFont(){}
 
-void Renderer::draw()
-{
-}
+void Renderer::draw(){}
 void Renderer::draw(int (&board)[4][4]){}
 
 void Renderer::drawRow(void *row, int size)
@@ -47,8 +47,11 @@ std::tuple<int, int> Renderer::getResolution()
 
 #ifdef USE_SDL
 std::map<std::string, SDL_Texture*> Renderer::images;
+std::map<std::string, TTF_Font*> Renderer::fonts;
+
 SDL_Window* Renderer::window;
 SDL_Renderer* Renderer::renderer;
+
 void Renderer::initialize()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
@@ -81,6 +84,11 @@ void Renderer::clear()
     SDL_SetRenderDrawColor(Renderer::renderer, 0, 0, 0, 255);
     SDL_RenderClear(Renderer::renderer);
 }
+
+void Renderer::display()
+{
+    SDL_RenderPresent(Renderer::renderer);
+}
 void Renderer::loadTextures()
 {
     SDL_Surface *surf;
@@ -109,7 +117,13 @@ void Renderer::loadTextures()
 
 void Renderer::loadFont()
 {
-
+    TTF_Font *font = TTF_OpenFont("Fonts/arial.ttf", 20);
+    if (font == NULL)
+    {
+        std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
+        return;
+    }
+    Renderer::fonts["Arial"] = font; 
 }
 
 void Renderer::draw()
@@ -171,8 +185,6 @@ void Renderer::draw(int (&board)[4][4])
             }
         }
     }
-
-    SDL_RenderPresent(Renderer::renderer);
 }
 
 void Renderer::drawRow(void *row, int size)
@@ -182,12 +194,41 @@ void Renderer::drawRow(void *row, int size)
 
 void Renderer::drawText(std::string text, std::string fontName, int fontSize, std::tuple<int, int> pos)
 {
+    if (!Renderer::fonts.contains(fontName))
+    {
+        std::cerr << "Font not found: " << fontName << std::endl;
+        return;
+    }
+    SDL_Color color = {0, 0, 0, 255};
 
+    SDL_Surface *surface = TTF_RenderText_Solid(Renderer::fonts[fontName], text.c_str(), color);
+    if (surface == NULL)
+    {
+        std::cerr << "Failed to render text: " << TTF_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(Renderer::renderer, surface);
+    if (texture == NULL)
+    {
+        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+        SDL_FreeSurface(surface);
+        return;
+    }
+
+    SDL_Rect textRect = {std::get<0>(pos), std::get<1>(pos), surface->w, surface->h};
+
+    SDL_RenderCopy(Renderer::renderer, texture, NULL, &textRect);
+
+    SDL_FreeSurface(surface);
+    SDL_DestroyTexture(texture);
 }
 
 std::tuple<int, int> Renderer::getResolution()
 {
-    return std::tuple<int, int>();
+    int width,height;
+    SDL_GetRendererOutputSize(Renderer::renderer, &width, &height);
+    return std::make_tuple(width, height);
 }
 
 #endif
@@ -212,6 +253,11 @@ std::map<std::string, sf::Font> Renderer::fonts;
     // Effacer la fenêtre
     void Renderer::clear() {
         window.clear();
+    }
+
+    void Renderer::display()
+    {
+        window.display();
     }
 
     // Charger une texture depuis un fichier
@@ -293,8 +339,7 @@ std::map<std::string, sf::Font> Renderer::fonts;
                     window.draw(sprite);
                 }
             }
-        }
-        window.display();  // Display the window after all tiles are drawn
+        }  
     }
 
 

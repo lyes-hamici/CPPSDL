@@ -7,8 +7,6 @@
 #include <string>
 #include <iostream>
 
-// #define USE_SFML
-
 #ifdef USE_WINDOWSCONSOLE
 #include <iomanip>
 #endif
@@ -35,6 +33,7 @@ public:
     static void initialize();
     static void destroy();
     static void clear();
+    static void display();
     static void loadTextures();
     static void loadFont();
     static void draw();
@@ -45,6 +44,8 @@ public:
 
 #ifdef USE_SDL
     static std::map<std::string, SDL_Texture*> images;
+    static std::map<std::string, TTF_Font*> fonts;
+
     static SDL_Window *window;
     static SDL_Renderer *renderer;
 #endif
