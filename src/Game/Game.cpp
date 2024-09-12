@@ -11,64 +11,53 @@
 #include "../Renderer/Renderer.hpp"
 
 Game::Game()
-    : currentScore(0)
+	: currentScore(0)
 {
-    Renderer::loadFont();
-    Renderer::loadTextures();
-    bestScore = File::loadScore("Score.save");
-    this->run();
-    // this->bestScore = save.load();
+	Renderer::loadFont();
+	Renderer::loadTextures();
+	bestScore = File::loadScore("Score.save");
+	this->run();
+	// this->bestScore = save.load();
 }
-
-Game::~Game()
-{
-}
-
-void Game::update()
-{
-}
-
+Game::~Game(){}
 void Game::run()
 {
-    Board board = Board();
-    while (true)
-    {
-        Sleep(16);
-        Renderer::clear();
-        if (!board.gridIsFull())
-        {
-            currentScore += board.checkMove();
-        }
-        Renderer::drawText("Score           Meilleur", "Arial", 20, std::tuple<int, int>{300, 400});
-        Renderer::drawText(std::to_string(currentScore) + "                 " + std::to_string(bestScore) + "\n", "Arial", 20, std::tuple<int, int>{300, 400});
-        board.printBoard();
-        Renderer::draw(board.board);
-        Renderer::drawText("Press r to reset the game", "Arial", 20, std::tuple<int, int>{300, 400});
-        if (Input::getPressed("Escape"))
-        {
-            std::cout << "Closing Programm" << std::endl;
-            break;
-        }
-        if (Input::getPressed("r"))
-        {
-            checkScore();
-            currentScore = 0;
-            board.initializeBoard();
-        }
-        if (board.gridIsFull())
-        {
-            Renderer::drawText("Game ended", "Arial", 20, std::tuple<int, int>(300, 400));
-            checkScore();
-        }
-        Renderer::display();
-    }
+	Board board = Board();
+	while (true)
+	{
+		Renderer::clear();
+		if (Input::getPressed("Escape"))
+		{
+			std::cout << "Closing Programm" << std::endl;
+			break;
+		}
+		if (Input::getPressed("r"))
+		{
+			board.initialize();
+			checkScore();
+			currentScore = 0;
+		}
+		if (!board.gridIsFull())
+		{
+			currentScore += board.checkMove();
+		}
+		Renderer::drawText("Score           Meilleur", "default", 20, std::tuple<int, int>(300, 400));
+		Renderer::drawText(std::to_string(currentScore) + "                 " + std::to_string(bestScore) + "\n", "default", 20, std::tuple<int, int>(300, 400));
+		board.render();
+		Renderer::draw(board.tiles);
+		Renderer::drawText("Press r to reset the game", "default", 20, std::tuple<int, int>(300, 400));
+		if (board.gridIsFull())
+		{
+			Renderer::drawText("Game ended", "default", 20, std::tuple<int, int>(300, 400));
+			checkScore();
+		}
+		Sleep(16);
+	}
 }
 
 void Game::checkScore()
 {
-    if (currentScore > bestScore)
-    {
-        File::saveScore(currentScore, "Score.save");
-        bestScore = currentScore;
-    }
+	if (currentScore <= bestScore){return;}
+	File::saveScore(currentScore, "Score.save");
+	bestScore = currentScore;
 }

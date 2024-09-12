@@ -15,17 +15,14 @@ public:
 //Init & Dest
     Board();
     ~Board();
-    void initializeBoard();
-    void resetBoard();
+    void initialize();
+    void reset();
     bool gridIsFull();
-
 //Logic for moves
     int checkMove(); // An idea find a better way
-
     // The  board - is an array of 4 x 4 elements - stored in the stack
-    int board[4][4];
-
-    void printBoard();
+    int tiles[4][4];
+    void render();
 };
 
 
