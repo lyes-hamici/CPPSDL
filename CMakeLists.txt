@@ -4,8 +4,8 @@
 cmake_minimum_required(VERSION 3.16)
 project(2048 LANGUAGES CXX)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Build)
-set(USE_SDL 0)
-set(USE_SFML 1)
+set(USE_SDL 1)
+set(USE_SFML 0)
 set(USE_WINDOWSCONSOLE 0)
 set(languageStandard 23)
 #=================================
@@ -46,7 +46,7 @@ endif()
 # SFML
 #=================================
 if(USE_SFML)
-	set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "2048 SDL2")
+	set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "2048 SFML")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SFML=${USE_SFML})
 	include(FetchContent)
 	FetchContent_Declare(SFML

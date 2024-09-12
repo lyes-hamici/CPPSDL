@@ -53,24 +53,6 @@ void Input::initialize()
 
 	void Input::initialize()
 	{
-		// Testing Block
-		// SDL_Init(SDL_INIT_EVERYTHING);
-		// SDL_Window *window = SDL_CreateWindow("Ma Fenêtre SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 400, 400, SDL_WINDOW_SHOWN);
-
-		// if (window == nullptr)
-		// {
-		// 	std::cerr << "Erreur lors de la création de la fenêtre: " << SDL_GetError() << std::endl;
-		// 	SDL_Quit();
-		// }
-
-		// SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-		// if (renderer == nullptr)
-		// {
-		// 	std::cerr << "Erreur lors de la création du renderer: " << SDL_GetError() << std::endl;
-		// 	SDL_DestroyWindow(window);
-		// 	SDL_Quit();
-		// }
-		// End Testing Block
 		Input::keys["Left"] = SDLK_LEFT;
 		Input::keys["Right"] = SDLK_RIGHT;
 		Input::keys["Up"] = SDLK_UP;
@@ -100,17 +82,14 @@ void Input::initialize()
 			if (state[scancode] && !Input::wasPressed)
 			{
 				Input::keyPressed = name;
-				SDL_PumpEvents();
 				return Input::wasPressed = true;
 			}
 			else if (!state[scancode] && Input::wasPressed && Input::keyPressed == name)
 			{	
-				SDL_PumpEvents();
 				return Input::wasPressed = false;
 			}
 			else
 			{
-				SDL_PumpEvents();
 				return false;
 			}
 		}

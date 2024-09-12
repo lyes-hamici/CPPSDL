@@ -17,7 +17,7 @@
 #include <map>
 #include "../LibSDL/SDL.h"
 #include <SDL_image.h>
-// #include <SDL2_ttf>
+#include <SDL_ttf.h>
 #endif
 
 #ifdef USE_SFML

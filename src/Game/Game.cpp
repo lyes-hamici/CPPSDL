@@ -38,29 +38,28 @@ void Game::run()
         if (!board.gridIsFull())
         {
             currentScore += board.checkMove();
-            }
-            Renderer::drawText("Score           Meilleur", "default", 20, std::tuple<int, int>(300, 400));
-            Renderer::drawText(std::to_string(currentScore) + "                 " + std::to_string(bestScore) + "\n", "default", 20, std::tuple<int, int>(300, 400));
-            board.printBoard();
-            Renderer::draw(board.board);
-            Renderer::drawText("Press r to reset the game", "default", 20, std::tuple<int, int>(300, 400));
-            if (Input::getPressed("Escape"))
-            {
-                std::cout << "Closing Programm" << std::endl;
-                break;
-            }
-
-            if (Input::getPressed("r"))
-            {
-                board.initializeBoard();
-                checkScore();
-                currentScore = 0;
-            }
-            if (board.gridIsFull())
-            {
-                Renderer::drawText("Game ended", "default", 20, std::tuple<int, int>(300, 400));
-                checkScore();
-            }
+        }
+        Renderer::drawText("Score           Meilleur", "default", 20, std::tuple<int, int>(300, 400));
+        Renderer::drawText(std::to_string(currentScore) + "                 " + std::to_string(bestScore) + "\n", "default", 20, std::tuple<int, int>(300, 400));
+        board.printBoard();
+        Renderer::draw(board.board);
+        Renderer::drawText("Press r to reset the game", "default", 20, std::tuple<int, int>(300, 400));
+        if (Input::getPressed("Escape"))
+        {
+            std::cout << "Closing Programm" << std::endl;
+            break;
+        }
+        if (Input::getPressed("r"))
+        {
+            checkScore();
+            currentScore = 0;
+            board.initializeBoard();
+        }
+        if (board.gridIsFull())
+        {
+            Renderer::drawText("Game ended", "default", 20, std::tuple<int, int>(300, 400));
+            checkScore();
+        }
     }
 }
 
