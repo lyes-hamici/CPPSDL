@@ -2,8 +2,7 @@
 #include <cctype>
 #include <iostream>
 #include <format>
-#include <string>
-
+#include <filesystem>
 #include "Game.hpp"
 #include "Board.hpp"
 #include "File.hpp"
@@ -11,10 +10,16 @@
 #include "../Renderer/Renderer.hpp"
 
 Game::Game()
-	: currentScore(0)
 {
-	Renderer::loadFont();
-	Renderer::loadTextures();
+	this->currentScore = 0;
+	this->texturesPath = "Images/";
+	this->fontsPath = "Fonts/";
+	for(auto& file : std::filesystem::directory_iterator(this->texturesPath)){
+		Renderer::loadTexture(file.path().string());
+	}
+	for(auto& file : std::filesystem::directory_iterator(this->fontsPath)){
+		Renderer::loadFont(file.path().string());
+	}
 	bestScore = File::loadScore("Score.save");
 	this->run();
 	// this->bestScore = save.load();
@@ -41,14 +46,14 @@ void Game::run()
 		{
 			currentScore += board.checkMove();
 		}
-		Renderer::drawText("Score           Meilleur", "Arial", 20, std::tuple<int, int>(300, 400));
-		Renderer::drawText(std::to_string(currentScore) + "                 " + std::to_string(bestScore) + "\n", "Arial", 20, std::tuple<int, int>(300, 400));
+		Renderer::drawText("Score           Meilleur", "arial", 20, std::tuple<int, int>(300, 400));
+		Renderer::drawText(std::to_string(currentScore) + "                 " + std::to_string(bestScore) + "\n", "arial", 20, std::tuple<int, int>(300, 400));
 		board.render();
 		Renderer::draw(board.tiles);
-		Renderer::drawText("Press r to reset the game", "Arial", 20, std::tuple<int, int>(300, 400));
+		Renderer::drawText("Press r to reset the game", "arial", 20, std::tuple<int, int>(300, 400));
 		if (board.gridIsFull())
 		{
-			Renderer::drawText("Game ended", "Arial", 20, std::tuple<int, int>(300, 400));
+			Renderer::drawText("Game ended", "arial", 20, std::tuple<int, int>(300, 400));
 			checkScore();
 		}
         Renderer::display();

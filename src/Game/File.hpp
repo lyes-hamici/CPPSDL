@@ -6,7 +6,7 @@
 class File
 { 
 public:
-    static int saveScore(int score, std::string filePath);
+    static void saveScore(int score, std::string filePath);
     static int loadScore(std::string filePath);
 };
 

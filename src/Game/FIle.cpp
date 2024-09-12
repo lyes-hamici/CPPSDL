@@ -3,14 +3,13 @@
 #include <filesystem>
 #include <fstream>
 
-int File::saveScore(int score, std::string filePath)
+void File::saveScore(int score, std::string filePath)
 {
     std::ofstream fout;
     fout.open(filePath);
 
     fout << std::to_string(score);
     fout.close();
-    return 0;
 }
 
 int File::loadScore(std::string filePath)
