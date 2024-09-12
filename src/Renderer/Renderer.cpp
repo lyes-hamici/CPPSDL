@@ -196,6 +196,8 @@ std::tuple<int, int> Renderer::getResolution()
 
 sf::RenderWindow Renderer::window;
 std::map<std::string, sf::Texture> Renderer::images;
+std::map<std::string, sf::Font> Renderer::fonts;
+
     void Renderer::initialize(){
         window.create(sf::VideoMode(600,700),"SFML 2048");
     }
@@ -214,10 +216,10 @@ std::map<std::string, sf::Texture> Renderer::images;
 
     // Charger une texture depuis un fichier
     void Renderer::loadTextures() {
-        int tileValues[] = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048};  // Les valeurs de tuiles possibles
+        int tileValues[] = {0, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536};  // Les valeurs de tuiles possibles
         for (int value : tileValues) {
             sf::Texture texture;
-            std::string filename = "../textures/" + std::to_string(value) + ".png";  // Chemin du fichier
+            std::string filename = "Images/" + std::to_string(value) + ".png";  // Chemin du fichier
             if (texture.loadFromFile(filename)) {
                 Renderer::images[std::to_string(value)] = texture;
             } else {
@@ -228,11 +230,11 @@ std::map<std::string, sf::Texture> Renderer::images;
 
     // Charger une police depuis un fichier
         void Renderer::loadFont() {
-        // sf::Font font;
-        // if (font.loadFromFile("C:/Windows/Fonts/arial.ttf")) {  // Adjust path to Arial font
-        //     fonts["arial"] = font;
-        // }
-        // Load other fonts if needed
+            sf::Font font;
+            if (font.loadFromFile("Fonts/arial.ttf")) {  // Adjust path to Arial font
+                fonts["arial"] = font;
+           }
+        
     }
 
     // Dessiner une texture spécifique
@@ -242,41 +244,57 @@ std::map<std::string, sf::Texture> Renderer::images;
 
     // Dessiner un texte
     void Renderer::drawText(std::string text, std::string fontName, int fontSize, std::tuple<int, int> pos) {
-        // sf::Text sfText;
-        // sfText.setFont(fonts[fontName]);
-        // sfText.setString(text);
-        // sfText.setCharacterSize(fontSize);
-        // sfText.setPosition(std::get<0>(pos), std::get<1>(pos));
-        // window.draw(sfText);
+        sf::Text sfText;
+        sfText.setFont(fonts[fontName]);
+        sfText.setString(text);
+        sfText.setCharacterSize(fontSize);
+        sfText.setPosition(std::get<0>(pos), std::get<1>(pos));
+        window.draw(sfText);
     }
 
     // Dessiner une grille de jeu (board)
    // Draw the game board (4x4 grid for the 2048 game)
     void Renderer::draw(int (&board)[4][4]) {
-        float tileSize = 100.0f;  // Size of each tile
-        for (size_t row = 0; row < 4; ++row) {
-            for (size_t col = 0; col < 4; ++col) {
+        float tileSize = 70.0f;  // Size of each tile
+        float spacing = 60.0f;    
+        int gridSize = 4;         // Size of the grid (4x4 for 2048 game)
+
+        // Calculate the total width and height of the board (including tiles and spacing)
+        float boardWidth = gridSize * tileSize + (gridSize - 1) * spacing;
+        float boardHeight = gridSize * tileSize + (gridSize - 1) * spacing;
+
+        // Get the size of the window
+        sf::Vector2u windowSize = window.getSize();
+
+        // Calculate the offset to center the board in the window
+        float offsetX = (windowSize.x - boardWidth) / 3.0f;
+        float offsetY = (windowSize.y - boardHeight) / 4.0f;
+
+        // Loop through the 4x4 board to draw each tile
+        for (size_t row = 0; row < gridSize; ++row) {
+            for (size_t col = 0; col < gridSize; ++col) {
                 int value = board[row][col];
 
-                // Dessiner la texture associée à la valeur de la tuile si elle existe
+                // Calculate the position considering spacing and centering
+                float xPosition = offsetX + col * (tileSize + spacing);
+                float yPosition = offsetY + row * (tileSize + spacing);
+
+                // If the tile has a value greater than 0, load the corresponding texture
                 if (value > 0) {
                     sf::Sprite sprite;
                     sprite.setTexture(images[std::to_string(value)]);
-                    sprite.setPosition(col * tileSize, row * tileSize);
+                    sprite.setPosition(xPosition, yPosition);
                     window.draw(sprite);
                 } else {
-                    // Si la texture n'existe pas, dessiner un rectangle basique avec une couleur
-                    sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
-                    tile.setPosition(col * tileSize, row * tileSize);
-                    tile.setFillColor(sf::Color(200, 200, 200));  // Couleur pour une tuile vide ou sans texture
-                    window.draw(tile);
-
-                    // Si la valeur est > 0 mais pas de texture associée, afficher la valeur en texte
-                    
+                    // If the value is 0, load the "0.png" texture (empty tile)
+                    sf::Sprite sprite;
+                    sprite.setTexture(images["0"]);
+                    sprite.setPosition(xPosition, yPosition);
+                    window.draw(sprite);
                 }
             }
         }
-        window.display();
+        window.display();  // Display the window after all tiles are drawn
     }
 
 
@@ -289,7 +307,6 @@ std::map<std::string, sf::Texture> Renderer::images;
     }
 
 
-// Définir les membres statiques
 
-// std::map<std::string, sf::Font> Renderer::fonts;
+
 #endif

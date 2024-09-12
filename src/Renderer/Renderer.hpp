@@ -52,7 +52,7 @@ public:
 #ifdef USE_SFML
     static sf::RenderWindow window;
     static std::map<std::string, sf::Texture> images;
-// std::map<std::string, sf::Font> Input::fonts;
+    static std::map<std::string, sf::Font> fonts;
 #endif
 };
 
