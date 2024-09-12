@@ -101,7 +101,9 @@ void Renderer::loadTextures()
     Renderer::images["Text"] = SDL_CreateTextureFromSurface(Renderer::renderer, surf);
     surf = IMG_Load("Images/Grid_background.png");
     Renderer::images["Grid_background"] = SDL_CreateTextureFromSurface(Renderer::renderer, surf);
-   
+    surf = IMG_Load("Images/Score.png");
+    Renderer::images["Score"] = SDL_CreateTextureFromSurface(Renderer::renderer, surf);
+
     SDL_FreeSurface(surf);
 }
 
@@ -133,21 +135,21 @@ void Renderer::draw(int (&board)[4][4])
     SDL_RenderCopy(Renderer::renderer, Renderer::images["Background"], NULL, NULL);
     
     int tileSize = 80;                              
-    int spacing = 8;                                
+    int spacing = 5;                                
     int gridWidth = (4 * tileSize) + (3 * spacing);  
     int gridHeight = (4 * tileSize) + (3 * spacing); 
 
     int startX = (600 - gridWidth) / 2;
     int startY = (700 - gridHeight) / 2;
 
-    SDL_Rect gridBackgroundRect = {startX - 40, startY - 40, gridWidth + 80, gridHeight + 80};
+    SDL_Rect gridBackgroundRect = {startX - 15, startY - 15, gridWidth + 30, gridHeight + 30};
     SDL_SetTextureAlphaMod(Renderer::images["Grid_background"], 200);
     SDL_RenderCopy(Renderer::renderer, Renderer::images["Grid_background"], NULL, &gridBackgroundRect);
     
-    SDL_Rect textRect = {startX - 40, 20, gridWidth + 80, 100};
-    SDL_Rect scoreRect = {startX - 40, gridHeight + startY + 60, gridWidth + 80, 100};
+    SDL_Rect scoreRect = {startX, 20, gridWidth + 80, 100};
+    SDL_Rect textRect = {startX - 40, gridHeight + startY + 60, gridWidth + 80, 100};
     SDL_RenderCopy(Renderer::renderer, Renderer::images["Text"], NULL, &textRect);
-    SDL_RenderCopy(Renderer::renderer, Renderer::images["Text"], NULL, &scoreRect);
+    SDL_RenderCopy(Renderer::renderer, Renderer::images["Score"], NULL, &scoreRect);
 
     for (int row = 0; row < 4; ++row)
     {
