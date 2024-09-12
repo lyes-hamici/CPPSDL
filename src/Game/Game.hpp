@@ -6,13 +6,10 @@ class Game
 private:
     int currentScore;
     int bestScore;
-
     void checkScore();
 public:
     Game();
     ~Game();
-
-    void update();
     void run();
 };
 

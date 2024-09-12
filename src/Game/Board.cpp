@@ -6,35 +6,22 @@
 #include "../Input/Input.hpp"
 #include "../Renderer/Renderer.hpp"
 
-// Init & Destroy functions
-Board::Board()
-{
-    initializeBoard();
-}
+Board::Board(){initialize();}
+Board::~Board(){}
 
-Board::~Board()
+void Board::initialize()
 {
-}
-
-void Board::initializeBoard()
-{
-    resetBoard();
+    reset();
     generateRandomTile();
     generateRandomTile();
 }
 
-void Board::resetBoard()
+void Board::reset()
 {
-    std::memset(board, 0, 16 * sizeof(int));
+    std::memset(tiles, 0, sizeof(tiles));
 }
 
 //--------------Board Logic--------------//
-// Verifications
-bool Board::verifyFreeTile(int i, int j)
-{
-    return board[i][j] == 0;
-}
-// Generations
 void Board::generateRandomTile()
 {
     std::random_device rd;
@@ -47,9 +34,9 @@ void Board::generateRandomTile()
     {
         i = dist(gen);
         j = dist(gen);
-    } while (board[i][j] != 0);
+    } while (tiles[i][j] != 0);
 
-    board[i][j] = tilePercent(gen) < 9 ? 2 : 4;
+    tiles[i][j] = tilePercent(gen) < 9 ? 2 : 4;
 }
 
 // Moves
@@ -92,19 +79,19 @@ int Board::checkMove()
             int x = isHorizontal ? i : j;
             int y = isHorizontal ? j : i;
 
-            if (board[x][y] != 0)
+            if (tiles[x][y] != 0)
             {
                 if (j != target)
                 {
                     if (isHorizontal)
                     {
-                        board[x][target] = board[x][y];
+                        tiles[x][target] = tiles[x][y];
                     }
                     else
                     {
-                        board[target][y] = board[x][y];
+                        tiles[target][y] = tiles[x][y];
                     }
-                    board[x][y] = 0;
+                    tiles[x][y] = 0;
                     moved = true;
                 }
                 target += step;
@@ -118,21 +105,21 @@ int Board::checkMove()
 
             if (isHorizontal)
             {
-                if ((y + step >= 0 && y + step < 4) && board[x][y] != 0 && board[x][y] == board[x][y + step])
+                if ((y + step >= 0 && y + step < 4) && tiles[x][y] != 0 && tiles[x][y] == tiles[x][y + step])
                 {
-                    sum += board[x][y] * 2;
-                    board[x][y] *= 2;
-                    board[x][y + step] = 0;
+                    sum += tiles[x][y] * 2;
+                    tiles[x][y] *= 2;
+                    tiles[x][y + step] = 0;
                     moved = true;
                 }
             }
             else
             {
-                if ((x + step >= 0 && x + step < 4) && board[x][y] != 0 && board[x][y] == board[x + step][y])
+                if ((x + step >= 0 && x + step < 4) && tiles[x][y] != 0 && tiles[x][y] == tiles[x + step][y])
                 {
-                    sum += board[x][y] * 2;
-                    board[x][y] *= 2;
-                    board[x + step][y] = 0;
+                    sum += tiles[x][y] * 2;
+                    tiles[x][y] *= 2;
+                    tiles[x + step][y] = 0;
                     moved = true;
                 }
             }
@@ -144,19 +131,19 @@ int Board::checkMove()
             int x = isHorizontal ? i : j;
             int y = isHorizontal ? j : i;
 
-            if (board[x][y] != 0)
+            if (tiles[x][y] != 0)
             {
                 if (j != target)
                 {
                     if (isHorizontal)
                     {
-                        board[x][target] = board[x][y];
+                        tiles[x][target] = tiles[x][y];
                     }
                     else
                     {
-                        board[target][y] = board[x][y];
+                        tiles[target][y] = tiles[x][y];
                     }
-                    board[x][y] = 0;
+                    tiles[x][y] = 0;
                     moved = true;
                 }
                 target += step;
@@ -167,9 +154,9 @@ int Board::checkMove()
     return sum;
 }
 
-void Board::printBoard()
+void Board::render()
 {
-    for (auto &i : board)
+    for (auto &i : tiles)
     {
         Renderer::drawRow(i, 4);
     }
@@ -181,24 +168,10 @@ bool Board::gridIsFull()
     {
         for (int j = 0; j < 4; ++j)
         {
-            if (board[i][j] == 0)
-            {
-                return false; // Grid is not full, there are empty tiles
-            }
-        }
-    }
-
-    for (int i = 0; i < 4; ++i)
-    {
-        for (int j = 0; j < 4; ++j)
-        {
-            if (j < 3 && board[i][j] == board[i][j + 1])
-            {
-                return false;
-            }
-
-            if (i < 3 && board[i][j] == board[i + 1][j])
-            {
+            auto isEmpty = tiles[i][j] == 0;
+            auto canMergeHorizontal = j < 3 && tiles[i][j] == tiles[i][j + 1];
+            auto canMergeVertical = i < 3 && tiles[i][j] == tiles[i + 1][j];
+            if(isEmpty || canMergeHorizontal || canMergeVertical){
                 return false;
             }
         }
