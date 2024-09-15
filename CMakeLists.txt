@@ -18,6 +18,7 @@ cmake_policy(SET CMP0115 NEW)
 #=================================
 add_executable(${PROJECT_NAME}
 	${CMAKE_SOURCE_DIR}/src/Core/main.cpp
+	${CMAKE_SOURCE_DIR}/src/Core/Vector2.cpp
 	${CMAKE_SOURCE_DIR}/src/Game/Board.cpp
 	${CMAKE_SOURCE_DIR}/src/Game/Game.cpp
 	${CMAKE_SOURCE_DIR}/src/Game/File.cpp

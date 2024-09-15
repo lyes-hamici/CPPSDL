@@ -10,6 +10,7 @@ private:
     std::string fontsPath;
     void checkScore();
 public:
+    static float deltaTime;
     Game();
     ~Game();
     void run();

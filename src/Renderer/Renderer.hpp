@@ -1,12 +1,16 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-// #define USE_SDL
+//#define USE_SDL
+//#define USE_SFML
+//#define USE_WINDOWSCONSOLE
 
 #include <tuple>
 #include <string>
 #include <iostream>
 #include <map>
+
+#include "../Core/Vector2.hpp"
 
 #ifdef USE_WINDOWSCONSOLE
 #include <iomanip>
@@ -35,10 +39,12 @@ public:
     static void loadTexture(std::string path);
     static void loadFont(std::string path);
     static void draw();
+    static void draw(std::string imageName);
+    static void draw(std::string imageName,Vector2 position,Vector2 size);
     static void draw(int (&board)[4][4]);
     static void drawRow(void *row, int size);
-    static void drawText(std::string text, std::string fontName, int fontSize, std::tuple<int, int> pos);
-    static std::tuple<int, int> getResolution();
+    static void drawText(std::string text, std::string fontName, int fontSize, Vector2 pos);
+    static Vector2 getResolution();
     static std::map<std::string,std::string> imageFormats;
     static std::map<std::string,std::string> fontFormats;
 #ifdef USE_SDL
