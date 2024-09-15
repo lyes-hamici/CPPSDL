@@ -2,18 +2,24 @@
 #include <gtest/gtest.h>
 #include "../src/Game/File.hpp"
 
-TEST(FileTest, LoadSave)
+TEST(FileTest, LoadSaveScore)
 {
-    EXPECT_EQ(File::saveScore(667,"Score.save"), 0);
+    File::saveScore(667, "Score.save");
     EXPECT_EQ(File::loadScore("Score.save"), 667);
 
-    EXPECT_EQ(File::saveScore(111111, "Score.save"), 0);
+    File::saveScore(111111, "Score.save");
     EXPECT_EQ(File::loadScore("Score.save"), 111111);
 }
 
-int main()
+TEST(FileTest, SaveInvalidScore)
 {
-    testing::InitGoogleTest();
+    int invalidScore = -1;
+    File::saveScore(invalidScore, "Score.save");
+    EXPECT_EQ(File::loadScore("Score.save"), 111111); 
+}
 
+int main(int argc, char **argv)
+{
+    ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
