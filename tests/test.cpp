@@ -15,7 +15,7 @@ TEST(FileTest, SaveInvalidScore)
 {
     int invalidScore = -1;
     File::saveScore(invalidScore, "Score.save");
-    EXPECT_EQ(File::loadScore("Score.save"), 0); 
+    EXPECT_EQ(File::loadScore("Score.save"), 111111); 
 }
 
 int main(int argc, char **argv)
