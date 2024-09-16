@@ -171,7 +171,7 @@ void Renderer::drawText(std::string text, std::string fontName, int fontSize, Ve
 		std::cerr << "Font not found: " << fontName << std::endl;
 		return;
 	}
-	SDL_Color color = {0, 0, 0, 255};
+	SDL_Color color = {255, 255, 255, 255};
 
 	SDL_Surface *surface = TTF_RenderText_Solid(Renderer::fonts[fontName], text.c_str(), color);
 	if (surface == NULL)
@@ -212,6 +212,7 @@ std::map<std::string, sf::Texture> Renderer::images;
 std::map<std::string, sf::Font> Renderer::fonts;
 std::map<std::string,std::string> Renderer::imageFormats;
 std::map<std::string,std::string> Renderer::fontFormats;
+sf::Event ev;
 
 void Renderer::initialize(){
 	window.create(sf::VideoMode(600,700),"SFML 2048");
@@ -233,10 +234,12 @@ void Renderer::clear() {
 
 void Renderer::display()
 {
-	window.display();
+
+	if (window.pollEvent(ev)){
+		window.display();
+	}
 }
 
-// Charger une texture depuis un fichier
 void Renderer::loadTexture(std::string path) {
 	auto extensionIndex = path.find_last_of(".");
 	if(extensionIndex == std::string::npos){
@@ -258,7 +261,6 @@ void Renderer::loadTexture(std::string path) {
 	Renderer::images[name] = texture;
 }
 
-// Charger une police depuis un fichier
 void Renderer::loadFont(std::string path){
 	auto extensionIndex = path.find_last_of(".");
 	if(extensionIndex == std::string::npos){
@@ -283,17 +285,32 @@ void Renderer::loadFont(std::string path){
 void Renderer::draw(std::string imageName){
 	Renderer::draw(imageName,Vector2(0,0),Renderer::getResolution());
 }
-void Renderer::draw(std::string imageName,Vector2 position,Vector2 size){
-	if(!Renderer::images.contains(imageName)){
-		//Draw error/default texture
-		return;
-	}
-	sf::Sprite sprite;
-	sprite.setTexture(images[imageName]);
-	sprite.setPosition(position.x,position.y);
-	window.draw(sprite);
-}
-// Dessiner un texte
+
+void Renderer::draw(std::string imageName,Vector2 position,Vector2 size) {
+        if (images.find(imageName) == images.end()) {
+            // Draw an error/default texture here if necessary
+            return;
+        }
+
+        sf::Sprite sprite;
+        sprite.setTexture(images[imageName]);
+
+        // Define the texture rectangle if needed
+        sprite.setTextureRect(sf::IntRect(0, 0, images[imageName].getSize().x, images[imageName].getSize().y));
+
+        // Adjust the position
+        sprite.setPosition(position.x, position.y);
+
+        // Adjust the size by modifying the scale of the sprite
+        sf::FloatRect bounds = sprite.getLocalBounds();
+        float scaleX = size.x / bounds.width;
+        float scaleY = size.y / bounds.height;
+        sprite.setScale(scaleX, scaleY);
+
+        // Draw the sprite in the window
+        window.draw(sprite);
+    }
+
 void Renderer::drawText(std::string text, std::string fontName, int fontSize, Vector2 pos) {
 	sf::Text sfText;
 	sfText.setFont(fonts[fontName]);
@@ -303,7 +320,7 @@ void Renderer::drawText(std::string text, std::string fontName, int fontSize, Ve
 	window.draw(sfText);
 }
 
-// Obtenir la résolution de la fenêtre
+
 Vector2 Renderer::getResolution() {
 	sf::Vector2u size = window.getSize();
 	return Vector2(size.x, size.y);
