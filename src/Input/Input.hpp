@@ -15,13 +15,13 @@
 #endif
 
 #ifdef USE_SDL
-#include "../LibSDL/SDL.h" //Revoir ça
+#include "../LibSDL/SDL.h"
 #endif
 
 #ifdef USE_SFML
 #include <SFML/Window/Keyboard.hpp>
-#include <thread> // pour std::this_thread::sleep_for
-#include <chrono> // pour std::chrono::milliseconds
+#include <thread> // for std::this_thread::sleep_for
+#include <chrono> // for std::chrono::milliseconds
 #endif
 
 class Input

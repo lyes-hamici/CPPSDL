@@ -25,7 +25,6 @@ void Input::initialize()
 	}
 	bool Input::getPressed(std::string name)
 	{
-		// std::cout << std::boolalpha << "On entering getPressed - wasPressed : " << Input::wasPressed << std::endl;
 		if (name.length() < 1)
 		{
 			return false;
@@ -127,7 +126,6 @@ void Input::initialize()
 		if (name.length() == 1){
 			return getPressed(name[0]);
 		}
-		// Vérifier si c'est une touche nommée (par ex. "Left", "Escape", etc.)
 		if (keys.contains(name))
 		{
 			if (sf::Keyboard::isKeyPressed(keys[name]) && !Input::wasPressed)
@@ -145,47 +143,5 @@ void Input::initialize()
 			}
 		}
 		return false;
-		// Sinon, traiter comme une touche de caractère unique
 	}
 #endif
-
-
-// int main()
-// {
-//     Input::initialize();
-//     while(true)
-//     {
-//         Sleep(100);
-//         // system("cls");
-//         if (Input::getPressed("Escape"))
-//         {
-//             std::cout << "Closing Programm" << std::endl;
-//             return 0;
-//         }
-//         if (Input::getPressed("Left"))
-//         {
-//             std::cout << "Shifting to the left" << std::endl;
-//         }
-//         if (Input::getPressed("Right"))
-//         {
-//             std::cout << "Shifting to the Right" << std::endl;
-//         }
-//         if (Input::getPressed("Up"))
-//         {
-//             std::cout << "UPPPPPPP" << std::endl;
-//         }
-//         if (Input::getPressed("Down"))
-//         {
-//             std::cout << "GET DOWWWNN" << std::endl;
-//         }
-//         if (Input::getPressed("Return"))
-//         {
-//             std::cout << "Retour" << std::endl;
-//         }
-//         if (Input::getPressed("r"))
-//         {
-//             std::cout << "REPLAYMOTHERFUCKER" << std::endl;
-//         }
-//     }
-//     return 0;
-// }

@@ -14,6 +14,7 @@
 
 #ifdef USE_WINDOWSCONSOLE
 #include <iomanip>
+#include <windows.h>
 #endif
 
 #ifdef USE_SDL
@@ -47,6 +48,9 @@ public:
     static Vector2 getResolution();
     static std::map<std::string,std::string> imageFormats;
     static std::map<std::string,std::string> fontFormats;
+#ifdef USE_WINDOWSCONSOLE
+    static HANDLE buffer;
+#endif
 #ifdef USE_SDL
     static std::map<std::string, SDL_Texture*> images;
     static std::map<std::string, TTF_Font*> fonts;

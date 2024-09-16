@@ -1,7 +1,12 @@
 #include "Renderer.hpp"
 
 #ifdef USE_WINDOWSCONSOLE
-void Renderer::initialize(){}
+HANDLE Renderer::buffer;
+void Renderer::initialize(){
+	COORD size = {200,100};
+	Renderer::buffer = CreateConsoleScreenBuffer(GENERIC_READ|GENERIC_WRITE,0,NULL,CONSOLE_TEXTMODE_BUFFER,NULL);
+	SetConsoleScreenBufferSize(Renderer::buffer,size);
+}
 
 void Renderer::destroy(){}
 
@@ -14,28 +19,32 @@ void Renderer::display(){}
 void Renderer::loadTexture(std::string path){}
 
 void Renderer::loadFont(std::string path){}
-void Renderer::draw(std::string imageName){}
-void Renderer::draw(std::string imageName,Vector2 position,Vector2 size){}
-void Renderer::draw(int (&board)[4][4]){}
-
-void Renderer::drawRow(void *row, int size)
-{
-	int *intRow = (int *)row;
-
-	int width = 5;
-
-	for (int j = 0; j < size; j++)
-	{
-		std::cout << std::setw(width) << intRow[j] << " ";
+void Renderer::draw(std::string imageName){
+	Renderer::draw(imageName,Vector2(0,0),Renderer::getResolution());
+}
+void Renderer::draw(std::string imageName,Vector2 position,Vector2 size){
+	std::string::const_iterator it = imageName.begin();
+    while (it != imageName.end() && std::isdigit(*it)) ++it;
+    auto isNumber = !imageName.empty() && it == imageName.end();
+	if(!isNumber){return;}
+	COORD bufferPosition = {(short)position.x,(short)position.y};
+	COORD rectSize = {(short)imageName.length(),0};
+	CHAR_INFO text[imageName.length()];
+	for(auto index = 0;index < imageName.length();index += 1){
+		text[index].Char.UnicodeChar = imageName[index];
 	}
-
-	std::cout << "\n" << std::endl;
+	WriteConsoleOutput(Renderer::buffer,text,rectSize,bufferPosition,NULL);
 }
 
-void Renderer::drawText(std::string text, std::string fontName, int fontSize, Vector2 pos)
+void Renderer::drawText(std::string text, std::string fontName, int fontSize, Vector2 position)
 {
-	std::cout << text << std::endl;
-
+	COORD bufferPosition = {(short)position.x,(short)position.y};
+	COORD rectSize = {(short)text.length(),0};
+	CHAR_INFO characters[text.length()];
+	for(auto index = 0;index < text.length();index += 1){
+		characters[index].Char.UnicodeChar = text[index];
+	}
+	WriteConsoleOutput(Renderer::buffer,characters,rectSize,bufferPosition,NULL);
 }
 
 Vector2 Renderer::getResolution(){return Vector2();}
@@ -138,31 +147,6 @@ void Renderer::draw(std::string imageName,Vector2 position,Vector2 size){
 	}
 	SDL_RenderCopy(Renderer::renderer,Renderer::images[imageName],NULL,&rect);
 }
-/*void Renderer::draw(int (&board)[4][4]){
-	int tileSize = 80;
-	int spacing = 5;
-	int gridWidth = (4 * tileSize) + (3 * spacing);
-	int gridHeight = (4 * tileSize) + (3 * spacing);
-	auto resolution = Renderer::getResolution();
-	int startX = (resolution.x - gridWidth) / 2;
-	int startY = (resolution.y - gridHeight) / 2;
-
-	for (int row = 0; row < 4; ++row){
-		for (int col = 0; col < 4; ++col){
-			int value = board[row][col]; 
-			SDL_Rect tilesRect = {
-				startX + col * (tileSize + spacing),
-				startY + row * (tileSize + spacing), 
-				tileSize,                            
-				tileSize                             
-			};
-			std::string textureKey = std::to_string(value);
-			if(Renderer::images.contains(textureKey)){
-				SDL_RenderCopy(Renderer::renderer, Renderer::images[textureKey], NULL, &tilesRect);
-			}
-		}
-	}
-}*/
 
 void Renderer::drawText(std::string text, std::string fontName, int fontSize, Vector2 pos)
 {

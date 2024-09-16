@@ -52,9 +52,6 @@ void Vector2::Set(float x,float y){
 	this->y = y;
 }
 Vector2 Vector2::MoveTowards(Vector2 other,float amount){
-/*	Vector2 a = *this - other;
-    float magnitude = std::sqrt(a.x * a.x + a.y * a.y);
-    return magnitude <= amount || !magnitude ? other : *this + a / magnitude * amount;*/
 	auto vector = Vector2();
 	if(this->x < other.x){
 		vector.x = std::min(this->x + amount,other.x);

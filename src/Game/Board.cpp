@@ -206,27 +206,3 @@ bool Board::gridIsFull(){
 	}
 	return true;
 }
-
-// int main()
-// {
-//     Input::initialize();
-//     Board board = Board();
-//     while (true)
-//     {
-//         Sleep(100);
-//         board.checkMove();
-//         board.printBoard(board.board);
-//         // system("cls");
-//         if (Input::getPressed("Escape"))
-//         {
-//             std::cout << "Closing Programm" << std::endl;
-//             return 0;
-//         }
-
-//         if (Input::getPressed("r"))
-//         {
-//             board.initializeBoard();
-//         }
-//     }
-//     return 0;
-// }

@@ -52,7 +52,7 @@ void Game::run(){
 		//board.checkAnimations();
 		Renderer::draw("Background");
 		Renderer::draw("Score",scoreOrigin,Vector2(boardLengths.x + 80,100));
-		Renderer::drawText("Score                                     Meilleur","arial",20,scoreOrigin + Vector2(40,20));
+		Renderer::drawText("Score                                      Best","arial",20,scoreOrigin + Vector2(40,20));
 		Renderer::drawText(std::format("{}                                         {}",currentScore,bestScore),"arial",20,scoreOrigin + Vector2(60,40));
 		board.render();
 		Renderer::draw("Text",infoOrigin,Vector2(boardLengths.x + 80,100));
